@@ -1,0 +1,131 @@
+﻿AAID,Android Advertising ID,A type of MUID. We accept both raw AAID and SHA1 AAID.
+AC,AIF Connector,(Anonymously Identified Fields Connector) OW service that matches customer data from source to target identifiers using mappings from AIM
+ADA,Audience Destination Account,
+AIC,AutoImport Config,
+AIM,Anonymous Identifier Mapping,OI service that provides mappings between identifiers
+AIR,Auto Import Request,
+AMP,Audience Management Platform,"A company that focuses on helping publishers to group their audience into segments. Segments are groups of website visitiors such as: ""parents with children aged 0-5"" or ""adults 18-24 who attend college."""
+ANA,Ad Network Account,Destination. Structure that manages our cookie pools.
+AP,Audience Propensities,Acronym Glossary
+API,Application Programming Interface,A way to interact with a piece of software.
+APM,Actions per Thousand,"The number of “actions” or ""conversions"" that occur per thousand visitors."
+ASH,Acxiom Save Haven,Abilitec / CLINK / ASHID / PEL Definitions
+B2B,Business to Business,Describes commerce transactions between businesses (i.e. a manufacturer and a wholesaler).
+B2C,Business to Consumer,Describes transactions between a business and a consumer (i.e. a grocery store and a shopper).
+BANG,Big Anonymized Graph,
+BD,Business Development,
+CAP,Creative Approval,An ad can run on a platform.
+CDN,Content Delivery Network,A network of servers that quickly delivers static content in the form of creative images or flash files.
+CDS,Customer Data Set,
+CI,Customer Implementation,Team at LiveRamp that works with customers and their data whilst maintaining unfathomable levels of awesomeness. (Now called PO or Product Operations)
+CID,Custom ID,"Externally referred to as ""Partner ID"". For more information, see Custom ID / PEL Integrations . Visible in Admin / rails as encrypted_custom_ID ."
+CLINK,CustomerLink,"Deprecated term for IdentityLink, refers to the actual ID rather than the workflow itself"
+CPA,Cost per Acquisition,"Advertising cost model based on a visitor taking some specifically defined action in response to an ad. In this case, an ""acquistion"" can be a sale, completed registration form, etc."
+CPC,Cost per Click,An internet advertising cost model in which the advertiser pays the publisher when an ad is clicked. See also PPC.
+CPL,Cost per Lead,Advertising cost model based the number of leads collected from a lead form after an ad is viewed. Also known as cost per inquiry (CPI).
+CPM,Cost per Thousand,"Advertising cost model based on ad impressions. (The advertiser pays for every 1000 impressions served. The total price paid in a CPM deal is calculated by multiplying the CPM rate by the number of CPM units. For example, one million impressions at $10 CPM equal a $10,000 total price.)"
+CRM,Customer Relationship Management/Database,A technology used to organize and manage a comapny's interactions with current and prospective customers. The information maintained CRM databases can map individuals to defined attributes or segments.
+CSM,Customer Success Manager,
+CSO,Customer Success Operations,
+CST,Client-side tag,
+CSV,Comma Separated Values,"A common file format used in data onboarding. In a CSV file, each piece of data is separated by commas."
+CTR,Click-Through Rate,The ratio of clicks to ad impressions. This is the most commonly used metric to determine the success of an ad campaign. (To calculate CTR: Number of clicks / Number of ad impressions expressed as a percentage).
+CTV,Connected TV,Connected TV (CTV) refers to any TV that can be connected to the internet and access content beyond what is available via the normal offering from a cable provider. It also refers to devices that use a television as a display and can connect to the internet to access content. Connected TV is also called IPTV.
+DAA,Digital Advertising Alliance,A premier online advertising association made up of various other industry organizations that are dedicated to self-regulation. Read more at the DAA's website (http://www.aboutads.info/).
+DA,Destination Account,A way to group together SSAs that share the same fields. Field configuration takes place within the Destination Account. Destination Accounts include both 'Accounts' and 'Campaigns' configured via Connect.
+DFP,DoubleClick For Publishers,
+DBM,DoubleClick Bid Manager,"Same as Google's DCM (DoubleClick Campaign Manager). This is is the part of the DoubleClick Digital Marketing platform (DDM) that you use to manage your digital display campaigns across websites and mobile devices. DCM includes a robust set of features for ad serving, targeting, verification, reporting, and attribution modeling."
+DBM DT,DoubleClick Data Transfer," Data Transfer Files contain information related to views (also referred to as impressions), clicks and conversions from a partner's account. AKA (less officially) Google impression files. "
+DCM,DoubleClick Campaign Manager,See DBM.
+DCO,Dynamic Creative Optimization,A combination of dynamic ad creatives and automatic optimization processes. This allows advertisers to serve a tailored creative for each impression in real time.
+DDL,Data-Driven Linear,
+DDS,Data Distribution Service,"A flexible service that efficiently ingests, stores, and segments online data from a given platform then matches and distributes the respective data to any platform of choice. Aka: A DDS audience takes Mobile, Cookie, and CID input files (in contrast to an Onboarding audience, which takes PII and/or email input files)."
+DMA,Designated Market,"Also known as a demographic metropolitan area, a DMA is a geographic area that makes up a cohesive television market."
+DMP,Data Management Platform,"Also called an Audience Management Platform, The DMP provides the infrastructure to process billions of first-, second-, and third-party data events per day."
+DMS,Data Monetization Service,Old term for DataStore (aka our product that allows clients to buy or sell segments).
+DNT,Do Not Track,"Do Not Track is a technology and policy proposal that enables users to opt out of tracking by websites they do not visit, including analytics services, advertising networks, and social platforms. At present few of these third parties offer a reliable tracking opt out, and tools for blocking them are neither user-friendly nor comprehensive. Much like the popular Do Not Call registry, Do Not Track provides users with a single, simple, persistent choice to opt out of third-party web tracking."
+DPA,Data Portrait Analysis,Compares the demographic and lifestyle/interest characteristics of your customer households to those in your territory. The result of the comparison is a list of characteristics that identify and distinguish your customer households from those in your territory.
+DR,Direct Response,"Term applied to marketing or advertising that is designed to solicit a direct response, which is specific and quantifiable. In online display advertising, this can be clicking on an ad, making a purchase, signing up for a newsletter, etc."
+DSJ,Data sync job,A data sync job is a job that delivers data to a destination partner.
+DSP,Demand Side Platform,A company that helps advertisers manage multiple ad and data exchange accounts for media buying purposes.
+DSSH,Data Science Safe Haven,See MAE (Formerly DSSH)
+DT,DevTools,Dev Tools team
+EAP,Estimated Average Price,"The bid that we expect will win a moderate number of impressions based on historical win rates in each third party system, such as Google's AdX (from AppNexus)."
+ECP,Estimated Clear Price,"An estimate of a bid that is likely to win a particular ad (or ""clear"" it) based on historical win rates in each third party system, such as Google's AdX (from AppNexus)."
+eCPM,Effective Cost per Thousand,A performance metric that is calculated by dividing total earnings by total number of impressions in thousands.
+EEID,Encrypted Entity ID,"An encrypted Entity ID (see above) which we give to certain partners to replace PII with (for example, Epsilon). Can be onboarded as an Identifier."
+EID,Entity ID,Identifies an entity in LR's system. An entity is exactly 1-1 with a email OR a name and postal address. EIDs are not associated with a email AND a name and postal address.
+EMP,Estimated Minimum Price,Has been changed to Estimated Clear Price.
+ESP,Email Service Provider,
+ESP,Entity Segment Packs,Consists of Entity ID (EID) and a mapping of the customer data fields associated with that entity.
+FF,Fulfillment,Fulfillment is an Acxiom team/system that handles deliveries to premium publisher destinations (FB is one of them). [DEFUNCT] Acxiom Fulfillment (FFL)
+FIC,File Ingestion Coordinator,
+GST,Google Store Transaction,
+HDFS,Hadoop File System,
+HEID,Hashed Entity ID,Entity ID (EID) is hashed so that it is no longer PII and can be stored in conjunction with associated data and anonymous online identifiers (cookie mappings)
+HLL,Hyper LogLog,An algorithm used to estimate cardinality (eg. number of unique entities in a dataset) with low error (~2%) and low resource usage. See wiki article.
+IAB,Interactive Advertising Bureau,A premier industry association that educates members of the advertising community about interactive advertising and is dedicated to the proliferation of the interactive advertising marketplace.
+IBE,InfoBase Elements,Acronym Glossary
+IDFA,iOS Identifier for Advertisers,iOS device ID. We accept both the raw IDFA and SHA1 hashed IDFA.
+IDL,IdentityLink,
+IDLP,Identity Link for Publishes,"Identity Link for Publishers, informally known as Publisher Link, is our connectivity product for Publishers. It is primarily centered around enabling publishers as destinations for Onboarding and Customer Link brands who want to execute direct, people-based ad campaigns. It also enables other use cases like closed-loop measurement, cross-device targeting, and DataStore."
+INT,Integrations,
+IO,Insertion Order,Contract to purchase media between a seller of advertising media and a buyer.  The terms of the purchase agreement are detailed in the IO.
+IRC,Import Record Collection,"Deciphers what the fields represent (field logic). Process is run in batches, every 5 minutes. Maximum duration is 30 minutes."
+KPI,Key Performance Initiators/Indicators,A set of metrics used to measure the performance of an organization or a particular campaign.
+LaL,Lookalike (lookalike modeling),
+LIR,LiveRamp Import Request,
+MAID,Mobile Advertising ID,
+MMA,Mobile Marketing Association,A premier industry association dedicated to the proliferation of mobile marketing and its associated technology.
+MMS,Multimedia Messaging Service,"A text message with multimedia content (video, images, ringtones, etc.)."
+MRAID,Mobile Rich Media as Interface Definitions,A specification written by the Interactive Advertising Bureau.
+MTA,Multi-touch Attribution,"An attribution model that attempts to assign value to every observed touch point between the user and marketer before a conversion occurs. Touch points might include viewing online content, using an application, or any other desired action."
+MUID,Mobile User ID,"We currently support receiving and sending data on Android and iOS mobile advertising IDs (AAID, IDFA, and SHA1 hashes of AAID and IDFA). Unique MUIDs are used for in-app advertising and measurement. See the KB for more details: https://support.liveramp.com/display/CI/Mobile+Identifiers"
+MVP,Minimum viable product,
+MVPD,multichannel video programming distributor,
+NAI,Network Advertising Initiative,"A self-regulatory, online advertising industry association focused on consumer education about online behavioral advertising (OBA). Read more at the NAI website (www.networkadvertising.org)."
+NAP,Name And Postal,Name and Postal Address
+NFS,Network File System,A client/server application that lets a computer user view and optionally store and update file on a remote computer. 
+OBA,Online Behavioral Advertising,Advertising targeted toward users based on their browsing history. See also Data Restrictions.
+OTT,Over The Top,"The term for the delivery of film and TV content via the internet, without requiring users to subscribe to a traditional cable or satellite pay-TV service like a Comcast or Time Warner Cable."
+O&O,Owned & Operated Publisher,A publisher that acts as a subsidiary and in which case the parent company receives 100% of the profit. This is opposed to a managed publisher that operates independently.
+PEL,Partner Encoded Link,The Acxiom version of the LRID (which is also known as an EEID)
+PIA,Privacy Impact Assessment,Acxiom process to determine privacy impact of key product and workflow changes. More details here.
+PI,Product Implementation,Formerly CI (Customer Implementation).
+PII,Personally Identifiable Information,"Information that can be used to indentify a user such as: an individual’s name, mailing address, phone number, or e-mail address. Typically, this information is excluded from data stored in a user cookie to anonymize digital marketing practices."
+PID,PEL Partner Identifier,Encryption keys and PIDs for Customer Link are used to create client-specific PELs. PIDs also serve other use cases besides encryption keys and beyond Customer Link.
+PIN,Proxy Identity Name,"Examples: email/bryan@liveramp.com, aim_name/xuddux"
+PME,Private Match Extension,"Partner only leverages their own data. In the US, the PME pub could leverage their data and the general match pool but not other SR pubs and other SR pubs can not access their data"
+PMP,Private Market Place,"A PMP is a mechanism publishers can use to create a ""private"" ad exchange that enables advertisers to buy programmatically (through a DSP) on a specific site, within a specific section of a site, within a specific set of the publisher's users, and with other pre-specified parameters like a floor price."
+PO,Product Operations,Formerly known as PI / CI.
+PPC,Pay per Click,An internet advertising cost model in which the advertiser pays the publisher when an ad is clicked. See also CPC.
+PPM,Pay per Impression,An internet advertising cost model in which the advertiser pays the publisher when an ad appears on the publisher's website.
+PPM,Profit per 1K Impression,"Profit per 1000 (""mille"") impressions."
+PR,Pull Request,
+RFI/RFP,Request for Information/Request for Proposal,"A solicitation made, often through a bidding process, by an agency or company interested in procurement of a commodity or service, to potential suppliers to submit business proposals."
+ROC,Run of Channel,"The scheduling of an online ad buying campaign where a banner, image, or media ad is run across categories or channels on a website or ad network."
+ROE,Run of Exchange,Targeting all impressions available on an ad exchange.
+ROI,Return on Investment,"A way of measuring marketing returns. ROI makes it easy to assess which types of marketing expenditures are most productive. To measure ROI: assess the dollars spent on a campaign or promotion, assess incremental sales, look at margins on those sales, then divide the incremental contribution by the cost of the program."
+ROS,Run of Site,"The scheduling of an online ad buying campaign where a banner, image,or media ad is placed anywhere within website. These programs are lesscostly than those that allow for specific placement."
+RPM,"Revenue per 1000 (""mille"") impressions",Represents the estimated earnings you'd accrue for every 1000 impressions you receive.
+RUM,Records under management,
+S2S,Server to Server,"Batch or streaming, integration with another application. A server-to-server integration allows LiveRamp to deliver data to a partner even without direct access to the user's browser."
+SDR,Sales Development Representative,
+SEM,Search Engine Marketing,A type of paid advertising that delivers ad impressions based on keywords submitted through a search engine.
+SEO,Search Engine Optimization,The practice of improving a web site's rank on the search engine results page for a specific keyword or keywords.
+SFDC,Sales Force Dot Com,salesforce.com
+SFTP,SSH File Transfer Protocol (AKA Secure File Transfer Protocol),"A network protocol that provides file access, file transfer, and file management over any reliable data stream. There are two primary machines PI works with: the CI machine and SFTP.  The SFTP is where customers directly connect to upload their files.  These are then copied over to the CI machine where PI and our system can directly access them for processing. "
+SLA,Service Level Agreement,"Estimated delivery times for LR's services. For example, the SLA for an import is 5-7 days."
+SMS,Short Mobile Service,Text messages sent to a mobile device.
+SOA,Service Oriented Architecture,
+SOP,Standards of Procedure,A definitive outline of all steps needed to complete a process or procedure.
+SSA,Server Side Account,"Server-side accounts are created for server to server integrations - batch and streaming. A given ANA will tie to an SSA. An SSA will have specific fields delivered, which is tied to a given audience."
+SSP,Supply Side Platform,An SSP is a technology platform that enables publishers to manage their ad impression inventory and maximize revenue from digital media.
+UDID,Unique Device Identifiers,Used by publishers and developers to track apps and target advertising on mobile analytics systems. Consists of a unique series of 40 numbers and letters that are assigned to each device. There is no opt-out mechanism.
+UGC,User Generated Content,Website content that is generated by a user and not the publisher.
+UID,User ID / Unique Identifier,"A Unique Identifier is a numeric or alphanumeric string that is associated with a single entity within a given system. UIDs make it possible to address that entity, so that it can be accessed and interacted with. Re: LiveRamp Imports, UIDs can refer to Audience Key mappings and the associated Audience Key."
+UIS,Users in Sync,"consists of cookies and HEIDs, and joins these users to ESPs for data delivery"
+UUID,Universally Unique Identifier,"An identifier standard that is made up of a 16-octet (128-bit) number. In its canonical form, a UUID is represented by 32 hexadecimal digits, displayed in five groups separated by hyphens, in the form 8-4-4-4-12 for a total of 36 characters (32 alphanumeric characters and four hyphens). For example: ""550e8400-e29b-41d4-a716-446655440000""."
+VAR,Value Added Resellers,
+VAST,Video Ad Serving Template,An ad serving protocol that provides a uniform way for video content to be transferred from ad servers to video players on web pages. (See the Interactive Advertising Bureau's VAST documentation at http://www.iab.net/guidelines/508676/digitalvideo/vast.)
+VPAID,Video Player Ad-Serving Interface Definition,An interface created to support interactive rich media video formats. (See the Interactive Advertising Bureau's VPAID documentation at http://www.iab.net/guidelines/508676/digitalvideo/vsuite/vpaid.)

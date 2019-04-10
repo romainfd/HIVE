@@ -1,0 +1,70 @@
+@font-face {
+  font-family: 'Flexo-Demi';
+  font-style: normal;
+  font-weight: normal;
+  src: url('chrome-extension://__MSG_@@extension_id__/fonts/flexo-demi.otf');
+}
+@font-face {
+  font-family: 'Flexo-Thin';
+  font-style: normal;
+  font-weight: normal;
+  src: url('chrome-extension://__MSG_@@extension_id__/fonts/flexo-thin.otf');
+}
+
+/* Tooltip container */
+.lraf-tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.lraf-tooltip .lraf-tooltiptext {
+  visibility: hidden;
+  width: 350px;
+  background-color: #f5f6fa;
+  color: #2d3436;
+  padding: 5px 8px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border-radius: 9px black;
+ 
+  /* Justify the content */
+  text-align: justify;
+  text-justify: inter-word;
+  font-family: Flexo-Thin;
+
+  /* Position the tooltip text */
+  z-index: 2147483647;  /* To be on top of everything */
+  position: absolute;
+  bottom: 100%;
+  left: 50%; 
+  margin-left: -175px; /* Use half of the width (350/2), to center the tooltip */
+}
+
+.lraf-tooltip .lraf-tooltiptext::after {
+  content: " ";
+  position: absolute;
+  top: 100%; /* At the bottom of the tooltip */
+  left: 50%;
+  margin-left: -12px; /* to center exactly */
+  border-width: 5px;
+  border-style: solid;
+  border-color: #f5f6fa transparent transparent transparent;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.lraf-tooltip:hover .lraf-tooltiptext {
+  visibility: visible;
+}
+
+.lraf_meaning {
+  font-family: Flexo-Demi;
+  font-size: 18px;
+  /* to center */
+  display:table;
+  margin:0 auto;
+}
+
+.lraf_synonyms {
+  font-style: italic;
+}

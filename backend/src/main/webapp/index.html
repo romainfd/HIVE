@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+<head>
+    <title>HoverIV</title>
+    <style>
+        @font-face {
+            font-family: 'Flexo-Demi';
+            font-style: normal;
+            font-weight: normal;
+            src: url('fonts/flexo-demi.otf');
+        }
+        @font-face {
+            font-family: 'Flexo-Thin';
+            font-style: normal;
+            font-weight: normal;
+            src: url('fonts/flexo-thin.otf');
+        }
+        #title{
+            font-family: Flexo-Demi;
+            size: 20px;
+        }
+    </style>
+</head>
+<body bgcolor="#f5f6fa">
+<center>
+    <img src="logo.png" , align="bottom">
+    <p id=title>Welcome on HoverIV</p>
+    <form action="/browse" method="GET">
+        <div>
+            <input type="text" id="acronym" name="acronym" placeholder="Acronym...">
+            <button type="submit">Search</button>
+        </div>
+    </form>
+    <form action="/browse" method="GET">
+        <div>
+            <button type="submit" formaction="/acronym" formmethod="GET">Add an acronym</button>
+            <button type="submit" formaction="/csv" formmethod="GET">Add a CSV of acronyms</button>
+        </div>
+    </form>
+</center>
+</body>
+</html>

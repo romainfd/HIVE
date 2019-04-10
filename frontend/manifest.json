@@ -1,0 +1,36 @@
+{
+  "name": "HoverIV",
+  "version": "0.1",
+  "manifest_version": 2,
+  "description": "Expands LiveRamp acronyms.",
+  "icons": {
+    "32": "logo32.jpg",
+    "48": "logo48.jpg",
+    "128": "logo128.jpg"
+  },
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "content_scripts": [
+    {
+      "css": [ "tooltip.css" ],
+      "matches": [
+        "https://mail.google.com/*", "http://mail.google.com/*",
+        "https://*.google.com/*",
+        "https://*.liveramp.com/*",
+        "https://*.liveramp.net/*",
+        "https://liveramp.atlassian.net/*"
+      ],
+      "js": [ "jquery-3.3.1.min.js", "content.js"]
+    }
+  ],
+  "permissions": [ "https://*.google.com/", "activeTab", "storage", "tabs" ],
+  "browser_action": {
+    "default_icon": "logo32.jpg",
+    "default_popup": "popup.html"
+  },
+  "web_accessible_resources": [
+    "pencil.png",
+    "fonts/*.otf"  
+  ]
+}

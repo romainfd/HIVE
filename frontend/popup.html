@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style type="text/css">
+		@font-face {
+		  font-family: 'Flexo-Demi';
+		  font-style: normal;
+		  font-weight: normal;
+		  src: url('fonts/flexo-demi.otf');
+		}
+		@font-face {
+		  font-family: 'Flexo-Thin';
+		  font-style: normal;
+		  font-weight: normal;
+		  src: url('fonts/flexo-thin.otf');
+		}
+
+		/* THE POPUP ITSELF */
+		body {
+			width: 405px;
+			height: 85px;
+			font-family: Flexo-Thin;
+			font-size: 15px;
+		}
+
+		/* THE BUTTON */
+		#do_once {
+
+		}
+
+		/* THE ADD BUTTONS */
+		.add_acro {
+			position: relative;
+			left: 15px;
+			margin: 0 18px;
+		}
+
+		/* THE RESULT */
+		#acronymData {
+			/* Justified text */
+			text-align: justify;
+			text-justify: inter-word;
+			font-family: Flexo-Thin;
+		}
+
+		/* THE TOGGLE SWITCH */
+		/* The switch - the box around the slider */
+		.switch {
+		  position: relative;
+		  display: inline-block;
+		  width: 43px;
+		  height: 24px;
+		}
+
+		/* Hide default HTML checkbox */
+		.switch input {
+		  opacity: 0;
+		  width: 0;
+		  height: 0;
+		}
+
+		/* The slider */
+		.slider {
+		  position: absolute;
+		  cursor: pointer;
+		  top: 0;
+		  left: 0;
+		  right: 0;
+		  bottom: 0;
+		  background-color: #ccc;
+		  -webkit-transition: .4s;
+		  transition: .4s;
+		}
+
+		.slider:before {
+		  position: absolute;
+		  content: "";
+		  height: 18px;
+		  width: 18px;
+		  left: 3px;
+		  bottom: 3px;
+		  background-color: white;
+		  -webkit-transition: .4s;
+		  transition: .4s;
+		}
+
+		input:checked + .slider {
+		  background-color: #2196F3;
+		}
+
+		input:focus + .slider {
+		  box-shadow: 0 0 1px #2196F3;
+		}
+
+		input:checked + .slider:before {
+		  -webkit-transform: translateX(18px);
+		  -ms-transform: translateX(18px);
+		  transform: translateX(18px);
+		}
+
+		/* Rounded sliders */
+		.slider.round {
+		  border-radius: 24px;
+		}
+
+		.slider.round:before {
+		  border-radius: 50%;
+		}
+
+		/* THE SEARCH BAR */
+		* { box-sizing: border-box; }
+		body {
+		  font: 16px Arial; 
+		}
+		.autocomplete {
+		  /*the container must be positioned relative:*/
+		  position: relative;
+		  display: inline-block;
+		  margin: 0 15px;
+		  width: 370px;
+		}
+
+		input {
+		  border: 1px solid transparent;
+		  background-color: #f1f1f1;
+		  padding: 10px;
+		  font-size: 16px;
+		}
+		input[type=text] {
+		  background-color: #f1f1f1;
+		  width: 100%;
+		}
+		input[type=submit] {
+		  background-color: DodgerBlue;
+		  color: #fff;
+		}
+		.autocomplete-items {
+		  position: absolute;
+		  border: 1px solid #d4d4d4;
+		  border-bottom: none;
+		  border-top: none;
+		  z-index: 99;
+		  /*position the autocomplete items to be the same width as the container:*/
+		  top: 100%;
+		  left: 0;
+		  right: 0;
+		}
+		.autocomplete-items div {
+		  padding: 10px;
+		  cursor: pointer;
+		  background-color: #fff; 
+		  border-bottom: 1px solid #d4d4d4; 
+		}
+		.autocomplete-items div:hover {
+		  /*when hovering an item:*/
+		  background-color: #e9e9e9; 
+		}
+		.autocomplete-active {
+		  /*when navigating through the items using the arrow keys:*/
+		  background-color: DodgerBlue !important; 
+		  color: #ffffff; 
+		}
+	</style>
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+	<link rel="stylesheet" href="tooltip.css">
+</head>
+<body>
+	<!-- Rounded switch -->
+	<div id="header" style="padding: 7px 15px 0 15px;">	
+		<span style="font-family: Flexo-Demi;">Activate:</span><span style="margin: 0 5px;">never</span>
+		<label class="switch">
+		  <input type="checkbox" id="usageSlider">
+		  <span class="slider round"></span>
+		</label>
+		<span style="margin: 0 5px;">always</span>
+		<button id="do_once" class="w3-button w3-white w3-border w3-border-blue w3-round">Activate once</button>
+	</div>
+	<hr style="margin: 8px 0 2px 0;" />
+	<div id="middle" style="padding: 7px 15px 0 15px;">
+		<span style="font-family: Flexo-Demi;">Add:</span>
+		<button id="add_one" class="add_acro w3-button w3-white w3-border w3-border-blue w3-round" href="https://google.com">New acronym</button>
+		<button id="add_csv" class="add_acro w3-button w3-white w3-border w3-border-blue w3-round" href="https://gaagle.com">Upload CSV</button>
+	</div>
+
+	<hr style="margin: 8px 0 8px 0;" />
+	<!--Make sure the form has the autocomplete function switched off:-->
+	<form autocomplete="off" action="/action_page.php">
+	  <div class="autocomplete">
+	    <input id="acronym" type="text" name="acronym" placeholder="Search for an acronym...">
+	  </div>
+	</form>
+
+	<div id="acronymData" style="padding: 10px 15px 3px 15px;"></div>
+
+	<script src="jquery-3.3.1.min.js"></script>
+	<script src="popup.js"></script>
+	<script src="autocomplete.js"></script>
+</body>
+</html>
