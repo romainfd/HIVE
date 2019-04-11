@@ -51,7 +51,8 @@
             <label for="synonyms">Synonyms</label>
             <input type="text" id="synonyms" name="synonyms" placeholder="Synonyms separated by commas..." value="${synonyms}">
         </div>
-        <div class="button">
+        <div>
+            <a href="https://liveramp-eng-hackweek.appspot.com"><button type="button">Back</button></a>
             <button type="submit" id="submit">Submit</button>
         </div>
     </form>

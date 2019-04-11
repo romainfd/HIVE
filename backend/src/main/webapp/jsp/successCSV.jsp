@@ -21,7 +21,7 @@
   </a>
   <p id=title>HoverIV</p>
   <form action="/csv" method="GET">
-    <div style="font-size: 14pt">CSV successfully added. Thank you!</div>
+    <div style="font-size: 14pt">Success! Posted ${posted} acronyms.</div>
     <div class="button">
       <button type="submit" id="submit">Back</button>
     </div>

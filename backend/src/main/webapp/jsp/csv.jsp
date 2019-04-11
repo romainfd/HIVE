@@ -24,7 +24,8 @@
         <div>
             <textarea id="glossary" name="glossary" placeholder="Copy paste CSV in the format acronym,meaning,description,synonyms"></textarea>
         </div>
-        <div class="button">
+        <div>
+            <a href="https://liveramp-eng-hackweek.appspot.com"><button type="button">Back</button></a>
             <button type="submit" id="submit">Submit</button>
         </div>
     </form>
