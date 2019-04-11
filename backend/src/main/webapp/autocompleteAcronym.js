@@ -113,6 +113,11 @@ function autocomplete(inp, arr) {
         }
         closeAllLists(e.target);
     });
+
+    document.addEventListener("keydown", function (e) {
+        if(e.keyCode == 9)
+            closeAllLists();
+    });
 }
 
 function fill(arr) {

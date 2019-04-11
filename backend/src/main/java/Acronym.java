@@ -23,7 +23,7 @@ public class Acronym {
   private String[] synonyms;
 
   public static boolean checkAcronym(String acronym) {
-    return acronym.matches("[A-Z]{2,7}");
+    return acronym.matches("[a-zA-Z]{2,7}");
   }
 
   public Acronym(String acronym, String meaning, String description) {

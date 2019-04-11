@@ -71,7 +71,7 @@ public class PostServlet extends HttpServlet {
 
     String action = req.getRequestURI().split("/")[1];
     if(action.equals("acronym")){
-      String acronym = req.getParameter("acronym");
+      String acronym = req.getParameter("acronym").toUpperCase();
       String meaning = req.getParameter("meaning");
       String description = req.getParameter("description");
       String synonyms = req.getParameter("synonyms");
@@ -79,7 +79,8 @@ public class PostServlet extends HttpServlet {
       if(synonyms != null){
         String[] synonym_list = synonyms.replace(" ", "").split(",");
         for (String synonym : synonym_list) {
-          postSynonym(acronym, synonym);
+          if(synonym.length() > 0)
+            postSynonym(acronym, synonym);
         }
       }
 
