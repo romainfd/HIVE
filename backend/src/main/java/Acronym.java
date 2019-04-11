@@ -1,7 +1,3 @@
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -10,8 +6,6 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
-import com.google.appengine.repackaged.com.google.common.collect.Iterables;
-import com.opencsv.CSVReader;
 
 public class Acronym {
   // Access to datastore
