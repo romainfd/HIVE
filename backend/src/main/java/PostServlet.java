@@ -117,7 +117,7 @@ public class PostServlet extends HttpServlet {
       String[] values;
       while ((values = csvReader.readNext()) != null) {
         List<String> line = Arrays.asList(values);
-        String acronym = line.get(0);
+        String acronym = line.get(0).toUpperCase();
         String meaning = line.get(1);
         String description = line.get(2);
         String[] synonyms = line.get(3).replace(" ", "").split(",");;

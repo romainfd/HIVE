@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <html>
 <head>
-    <title>HoverIV - Post an Acronym</title>
+    <title>HIVE - Post an Acronym</title>
     <link rel="stylesheet" type="text/css" href="/style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="/autocompleteAcronym.js"></script>
@@ -32,7 +32,7 @@
     <a href="https://liveramp-eng-hackweek.appspot.com">
         <img src="logo.png" , align="bottom">
     </a>
-    <p id=title>HoverIV</p>
+    <p id=title>HIVE</p>
     <form action="/acronym" method="POST" autocomplete="off">
         <div style="font-size: 14pt">Post an acronym</div>
         <div class="autocomplete">
