@@ -4,10 +4,26 @@
 <head>
   <title>HoverIV - Post an Acronym</title>
   <link rel="stylesheet" type="text/css" href="/style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script>
+      $(document).on('keypress',function(e) {
+          if(e.which == 13) {
+              $('button#submit').click();
+          }
+      });
+      $(document).ready(function() {
+          if($('label#synonyms').text().length == 0)
+              $('div#syn').remove();
+          else
+              $('label#synonyms').text(("Synonyms: " + $('label#synonyms').text()));
+      });
+  </script>
 </head>
 <body bgcolor="#f5f6fa">
 <center>
-  <img src="/logo.png" , align="bottom">
+  <a href="https://liveramp-eng-hackweek.appspot.com">
+    <img src="/logo.png" , align="bottom">
+  </a>
   <p id=title>HoverIV</p>
   <form action="" method="GET">
     <div style="font-family: Flexo-Demi; font-size:14pt">${meaning}</div>
@@ -15,11 +31,10 @@
       <p>${description}</p>
     </div>
     <div>
-      <label style="font-style: italic">Synonyms</label>
-      <label style="font-style: italic">${synonyms}</label>
+      <label id="synonyms" style="font-style: italic; text-align: center; width:300px;">${synonyms}</label>
     </div>
     <div class="button">
-      <button type="submit">Reset</button>
+      <button type="submit" id="submit">Back</button>
     </div>
   </form>
 </center>

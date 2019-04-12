@@ -1,7 +1,3 @@
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -10,8 +6,6 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
-import com.google.appengine.repackaged.com.google.common.collect.Iterables;
-import com.opencsv.CSVReader;
 
 public class Acronym {
   // Access to datastore
@@ -29,7 +23,7 @@ public class Acronym {
   private String[] synonyms;
 
   public static boolean checkAcronym(String acronym) {
-    return acronym.matches("[A-Z]{2,7}");
+    return acronym.matches("[a-zA-Z]{2,7}");
   }
 
   public Acronym(String acronym, String meaning, String description) {

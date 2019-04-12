@@ -1,19 +1,3 @@
-/*
- * Copyright 2016 Google Inc. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -87,7 +71,7 @@ public class PostServlet extends HttpServlet {
 
     String action = req.getRequestURI().split("/")[1];
     if(action.equals("acronym")){
-      String acronym = req.getParameter("acronym");
+      String acronym = req.getParameter("acronym").toUpperCase();
       String meaning = req.getParameter("meaning");
       String description = req.getParameter("description");
       String synonyms = req.getParameter("synonyms");
@@ -95,16 +79,13 @@ public class PostServlet extends HttpServlet {
       if(synonyms != null){
         String[] synonym_list = synonyms.replace(" ", "").split(",");
         for (String synonym : synonym_list) {
-          postSynonym(acronym, synonym);
+          if(synonym.length() > 0)
+            postSynonym(acronym, synonym);
         }
       }
 
       if(Acronym.checkAcronym(acronym)){
         postAcronym(acronym, meaning, description);
-        req.setAttribute(ACRONYM, acronym);
-        req.setAttribute(MEANING, meaning);
-        req.setAttribute(DESC, description);
-        req.setAttribute(SYN, synonyms);
         req.getRequestDispatcher("/jsp/success.jsp").forward(req, resp);
       }
       else{
@@ -139,9 +120,13 @@ public class PostServlet extends HttpServlet {
         String acronym = line.get(0);
         String meaning = line.get(1);
         String description = line.get(2);
+        String[] synonyms = line.get(3).replace(" ", "").split(",");;
         if(Acronym.checkAcronym(acronym)){
           postAcronym(acronym, meaning, description);
           posted++;
+          for (String synonym : synonyms) {
+            postSynonym(acronym, synonym);
+          }
         }
       }
     } catch (FileNotFoundException e) {
