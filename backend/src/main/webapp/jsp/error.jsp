@@ -3,7 +3,7 @@
 <!doctype html>
 <html>
 <head>
-  <title>HoverIV</title>
+  <title>HIVE - Error</title>
   <link rel="stylesheet" type="text/css" href="/style.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>
@@ -19,7 +19,7 @@
   <a href="https://liveramp-eng-hackweek.appspot.com">
     <img src="/logo.png" , align="bottom">
   </a>
-  <p id=title>HoverIV</p>
+  <p id=title>HIVE</p>
   <form action="/acronym" method="GET">
     <div style="font-size: 14pt">Error :(</div>
     <div>Acronyms must contain 2 to 6 capital characters.</div>

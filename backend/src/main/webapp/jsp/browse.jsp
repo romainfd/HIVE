@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <html>
 <head>
-  <title>HoverIV - Post an Acronym</title>
+  <title>HIVE - Search acronyms</title>
   <link rel="stylesheet" type="text/css" href="/style.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>
@@ -24,7 +24,7 @@
   <a href="https://liveramp-eng-hackweek.appspot.com">
     <img src="/logo.png" , align="bottom">
   </a>
-  <p id=title>HoverIV</p>
+  <p id=title>HIVE</p>
   <form action="" method="GET">
     <div style="font-family: Flexo-Demi; font-size:14pt">${meaning}</div>
     <div>
