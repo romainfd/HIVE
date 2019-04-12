@@ -126,7 +126,6 @@ function lraf_main() {
 	function find_acronyms(modify, _places_to_replace) {
 		var queue = _places_to_replace.slice(0);  // copy it
 		var acronyms_found = new Set();
-		console.log(queue.length, queue);
 		while (queue.length > 0) {
 			var elem = queue.pop();
 			if (elem.prop("tagName") === "IFRAME") {
@@ -142,7 +141,6 @@ function lraf_main() {
 				var changed = false;
 				for (var i = 0; i < words.length; i++) {
 					if (checkAcronym(words[i])) {
-						console.log(words[i], "context: " + levelTextNode.nodeValue);
 						changed = true;
 						acronyms_found.add(splitMatch(words[i])["acronym"]);
 						if (modify) {
@@ -161,13 +159,13 @@ function lraf_main() {
 		return acronyms_found;
 	}
 
+	/* Pages using sub divs with scroll (like gmail mail content) won't scroll anymore because they would simply overflow */
 	function allow_overflow_no_scroll() {
 		var tooltiptexts = $(".lraf-tooltiptext");
 		for (var i = 0; i < tooltiptexts.length; i++) {
 			var parent = $(tooltiptexts[i]).parent();
 			while (parent.length > 0) {
 				if (parent.css("overflow") != "visible") {
-					console.log("Overflow allowed for", parent);
 					parent.css("overflow", "visible");
 					break;
 				}
@@ -184,7 +182,18 @@ function lraf_main() {
    				// We set the popup size
 				var height = 16;
 				if (tooltip_text.children(".end").length > 0) {
-					var margin = tooltip_text.children().length > 2 ? 10 : -10;  // only the end span and the meaning ?
+					var margin = 10;
+					if (tooltip_text.children().length == 2) {
+						if (tooltip_text.children(".modify-icon").length == 1) {
+							// No match in DB => modify-icon directly in tooltip
+							margin = 15;
+						} else {
+							// modify-icon in meaning
+							margin = -10;  // only the end span and the meaning
+						}
+					} else {
+						margin = 10;
+					}
 					height = $(tooltip_text.children(".end")[0]).offset().top - tooltip_text.offset().top + margin;  // 10 to have some margin
 				}
 				tooltip_text.css("height", height + "px");
@@ -196,18 +205,7 @@ function lraf_main() {
 				});
 			}
 		}, function() {
-			console.log("out", $( this ));
-/*
-			for (var i = 0; i < tooltiptexts.length; i++) {
-				var menuItemPos = $menuItem.position();
-	    
-			    // place the submenu in the correct position relevant to the menu item
-			    $submenuWrapper.css({
-					top: menuItemPos.top,
-					left: menuItemPos.left
-				});
-			}
-			*/
+			// OUT
 		});
 	}
 
