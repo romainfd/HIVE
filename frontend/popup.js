@@ -47,9 +47,9 @@ document.getElementById('do_once').onclick = convertAcronyms;
 /* Manages the creation of new content */
 document.getElementById("add_one").onclick = function() {
 	var searched_acronym = document.getElementById("acronym").value;
-	var end = 0;
+	var end = "";
 	if (searched_acronym.length > 0) {
-		end = "?acronym="+searched_acronym;  // we prefill the creation form
+		end = "?acronym="+searched_acronym;
 	}
 	chrome.tabs.create({url: "https://liveramp-eng-hackweek.appspot.com/acronym" + end});
 	// We collect the acronym entered but not found

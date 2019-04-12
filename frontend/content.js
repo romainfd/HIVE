@@ -78,16 +78,18 @@ function lraf_main() {
 		if (acronym in acronymsData) {
 			return (`<span class="lraf-tooltip">`+acronym+`
 			  <span class="lraf-tooltiptext">
-			  	<span class="lraf_meaning">` + acronymsData[acronym]["meaning"] + `<a href="https://liveramp-eng-hackweek.appspot.com/acronym?acronym=` + acronym + `" target="_blank"><img src="`+chrome.extension.getURL("pencil.png")+`" style="width: 13px;"></a></span>` + 
+			  	<span class="lraf_meaning">` + acronymsData[acronym]["meaning"] + `<span class="modify-icon" data-href="https://liveramp-eng-hackweek.appspot.com/acronym?acronym=` + acronym + `"><img src="`+chrome.extension.getURL("pencil.png")+`" style="width: 13px;"/></span></span>` + 
 			  	(acronymsData[acronym]["synonyms"].length > 0 ? `<span class="lraf_synonyms">Synonyms: ` + acronymsData[acronym]["synonyms"].join(', ') + `</span><br/>`: ``) +
 			  	(acronymsData[acronym]["description"].length > 0 ? `<span class="lraf_description">Description: ` + acronymsData[acronym]["description"] + `</span>` : ``) +
-			  `</span>
+			   `<span class="end"></span>
+			  </span>
 			</span>`);
 		} else {
 			console.log(acronym, "Missed");
 			return (`<span class="lraf-tooltip">`+acronym+`
 			  <span class="lraf-tooltiptext">
-			  	Help the LiveRamp family: <a href="https://liveramp-eng-hackweek.appspot.com/acronym" target="_blank"><img src="`+chrome.extension.getURL("pencil.png")+`" style="width: 13px;"></a>
+			  	Help the LiveRamp family: <span class="modify-icon" data-href="https://liveramp-eng-hackweek.appspot.com/acronym" target="_blank"><img src="`+chrome.extension.getURL("pencil.png")+`" style="width: 13px;"/></span>
+			    <span class="end"></span>
 			  </span>
 			</span>`);
 		}
@@ -101,14 +103,25 @@ function lraf_main() {
 		return word.length <= MAX_SIZE && MIN_SIZE <= word.length && acronym_regex.test(word) && /[A-Z]{2,}/.test(word) && !(STOP_WORDS.includes(splitMatch(word)["acronym"]));
 	}
 
-	var places_to_replace = [$("body")];
+	var places_to_replace = [];
+	// specific places for the website
 	if (window.location.href.includes("atlassian.net/wiki")) {
-		places_to_replace = [$("#main-content")];
+		console.log("KB set up detected");
+		places_to_replace.push($("#main-content"));
 		// doesn't work because comments are loaded later
 		for (var i  = 0; i < $(".comment-content").length; i++) {
 			places_to_replace.push($($(".comment-content")[i]));
 		}
+	} else if (window.location.href.includes("atlassian.net/browse")) {
+		console.log("JIRA set up detected");
+		places_to_replace.push($("#descriptionmodule"));
+	} else if (window.location.href.includes("mail.google.com/mail")) {
+		console.log("Gmail set up detected");
+		for (var i  = 0; i < $(".a3s").length; i++) {
+			places_to_replace.push($($(".a3s")[i]));
+		}
 	}
+
 
 	function find_acronyms(modify, _places_to_replace) {
 		var queue = _places_to_replace.slice(0);  // copy it
@@ -148,6 +161,56 @@ function lraf_main() {
 		return acronyms_found;
 	}
 
+	function allow_overflow_no_scroll() {
+		var tooltiptexts = $(".lraf-tooltiptext");
+		for (var i = 0; i < tooltiptexts.length; i++) {
+			var parent = $(tooltiptexts[i]).parent();
+			while (parent.length > 0) {
+				if (parent.css("overflow") != "visible") {
+					console.log("Overflow allowed for", parent);
+					parent.css("overflow", "visible");
+					break;
+				}
+				parent = parent.parent();
+			}
+		}
+	}
+
+	function allow_overflow() {
+		$(".lraf-tooltip").hover( function() {
+			if ($(this).children(".lraf-tooltiptext").length == 1) {
+				var tooltip_text = $($(this).children(".lraf-tooltiptext")[0]);
+	    
+   				// We set the popup size
+				var height = 16;
+				if (tooltip_text.children(".end").length > 0) {
+					var margin = tooltip_text.children().length > 2 ? 10 : -10;  // only the end span and the meaning ?
+					height = $(tooltip_text.children(".end")[0]).offset().top - tooltip_text.offset().top + margin;  // 10 to have some margin
+				}
+				tooltip_text.css("height", height + "px");
+
+			    // place the tooltiptext in the correct position relevant to the tooltip
+			    tooltip_text.offset({
+					top: $(this).offset().top - Math.round($(this).outerHeight() * 0.75) - height,
+					left: $(this).offset().left - Math.round(tooltip_text.innerWidth() * 0.5) + 7 + Math.round($(this).outerWidth() * 0.5)
+				});
+			}
+		}, function() {
+			console.log("out", $( this ));
+/*
+			for (var i = 0; i < tooltiptexts.length; i++) {
+				var menuItemPos = $menuItem.position();
+	    
+			    // place the submenu in the correct position relevant to the menu item
+			    $submenuWrapper.css({
+					top: menuItemPos.top,
+					left: menuItemPos.left
+				});
+			}
+			*/
+		});
+	}
+
 	// 1. Collect all the acronyms in the page
 	var acronyms_found = find_acronyms(modify=false, places_to_replace);
 
@@ -183,6 +246,15 @@ function lraf_main() {
 					// console.log($("body").html());
 					// console.log("HTML", $("body").html());			
 				}
+
+				// 5. We allow the tooltips to overflow
+				allow_overflow();
+
+				// 6. We listen to the modify icon
+				$(".modify-icon").click(function() {
+      				// sends message so that background opens a new tab
+      				chrome.runtime.sendMessage({"message": "open_new_tab", "url": $(this).data("href")});
+				});
 			} else {
 				alert("Error with LiveRamp acronym finder: couldn't connect to the database.");
 			}

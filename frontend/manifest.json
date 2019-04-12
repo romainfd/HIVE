@@ -4,9 +4,10 @@
   "manifest_version": 2,
   "description": "Expands LiveRamp acronyms.",
   "icons": {
-    "32": "logo32.jpg",
-    "48": "logo48.jpg",
-    "128": "logo128.jpg"
+    "16": "logo16.png",
+    "32": "logo32.png",
+    "48": "logo48.png",
+    "128": "logo128.png"
   },
   "background": {
     "scripts": ["background.js"]
@@ -26,7 +27,7 @@
   ],
   "permissions": [ "https://*.google.com/", "activeTab", "storage", "tabs" ],
   "browser_action": {
-    "default_icon": "logo32.jpg",
+    "default_icon": "logo.png",
     "default_popup": "popup.html"
   },
   "web_accessible_resources": [
