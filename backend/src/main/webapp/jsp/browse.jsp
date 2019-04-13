@@ -33,8 +33,9 @@
     <div>
       <label id="synonyms" style="font-style: italic; text-align: center; width:300px;">${synonyms}</label>
     </div>
-    <div class="button">
+    <div>
       <button type="submit" id="submit">Back</button>
+      <a href="https://liveramp-eng-hackweek.appspot.com/acronym?acronym=${acronym}"><button type="button">Edit</button></a>
     </div>
   </form>
 </center>

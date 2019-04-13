@@ -98,6 +98,7 @@ public class GetServlet extends HttpServlet {
           String meaning = (String)entity.getProperty(MEANING);
           String description = (String)entity.getProperty(DESC);
           String synonyms = String.join(", ", Acronym.getSynonyms(acronym));
+          req.setAttribute(ACRONYM, acronym);
           req.setAttribute(MEANING, meaning);
           req.setAttribute(DESC, description);
           req.setAttribute(SYN, synonyms);
