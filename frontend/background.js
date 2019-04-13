@@ -3,7 +3,7 @@ console.log("BACK");
  chrome.extension.onConnect.addListener(function(port) {
       console.log("Connected .....");
       port.onMessage.addListener(function(msg) {
-           console.log("message recieved" + msg);
+           console.log("message received" + msg);
 		  // Send a message to the active tab
 		  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
 		    var activeTab = tabs[0];

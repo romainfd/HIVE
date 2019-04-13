@@ -13,13 +13,21 @@
 
 /* Tooltip container */
 .lraf-tooltip {
+  overflow: visible !important;
   position: relative;
   display: inline-block;
   border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
 }
 
+.lraf-tooltiptext {
+  position: fixed !important;
+  display: block !important;
+  overflow: auto !important;
+}
+
 /* Tooltip text */
 .lraf-tooltip .lraf-tooltiptext {
+  overflow: visible !important;
   visibility: hidden;
   width: 350px;
   background-color: #f5f6fa;
@@ -34,7 +42,7 @@
   font-family: Flexo-Thin;
 
   /* Position the tooltip text */
-  z-index: 2147483647;  /* To be on top of everything */
+  z-index: 2147483647 !important;  /* To be on top of everything */
   position: absolute;
   bottom: 100%;
   left: 50%; 
@@ -54,6 +62,7 @@
 
 /* Show the tooltip text when you mouse over the tooltip container */
 .lraf-tooltip:hover .lraf-tooltiptext {
+  overflow: visible !important;
   visibility: visible;
 }
 
