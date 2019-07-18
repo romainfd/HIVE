@@ -6,7 +6,7 @@ The extension metadata is located in the ```manifest.json``` file.
 To deploy the app locally for testing purposes:
 * Go the Chrome extensions manager: ```chrome://extensions```
 * You should see something similar to the following screen:
-![Chrome extensions manager](../README_img/extensions.png)
+![Chrome extensions manager](extensions.png)
 * Enable the developer mode with the toggle in the top right corner
 * Click on the "Load Unpacked" button in the top left corner
 * Load the complete ```extension``` folder
