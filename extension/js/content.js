@@ -1,54 +1,32 @@
-// content.js
-
-/* Used in popup.js to make sure it's only used once per page */
-chrome.storage.sync.set({"cpt": 0}, function() {
-  console.log("Counter value set to 0");
-});
-
 /* Listen to this call to run the flow */
 chrome.runtime.onMessage.addListener(
 	function(request, sender, sendResponse) {
-		if (request.message === "clicked_browser_action") {
+		if (request.message === "convertAcronyms") {
 			lraf_main();
 		}
 	}
 );
 
-/* Also runs the flow if usage setting is set to always */
-window.addEventListener("load", function() {
-	chrome.storage.sync.get('usage', function(result) {
-		console.log('Usage setting is set to ' + result.usage);
-		if (result.usage === "always") {
-			lraf_main();
-		}
-	});
-});
-
+/* Listen to keyboard shortcut as well */
+window.onkeyup = function(e){
+	// Ctrl + Option + H
+	if (e.keyCode == 72 && e.ctrlKey && e.altKey) {
+		lraf_main();
+	}
+}
 
 // Main function (wraps everything to avoid naming issues)
 
-// $("body").html("<div><p id='0'>ANA</p> ANB<p id='1'>ANC</p> ETT</div>");
+// $("body").html("<div><p id='0'>ANA</p> ANB<p id='1'>ANC</p> ETT</div>");  // for test purposes: gives a simple body
 function lraf_main() {
+	console.log("******** Running HIVE *********");
 	SERVER = "https://liveramp-eng-hackweek.appspot.com/";
 	STOP_WORDS = ["IE"];  // list of words not to modify (core html/js/css/... keywords)
 	console.log("The following acronyms are ignored for safety reason:", STOP_WORDS);
 
-	var acronymsToId = {
-		"ANA": 0,
-		"ANB": 1,
-		"ANC":123,
-		"ETT": 65
-	};
-
-	function getAcronymId(word) {
-		if (word in acronymsToId) {
-			return acronymsToId[word];
-		}
-		return 3;
-	}
-
-	var STARTERS = "\\[\\{\\(,/";
-	var ENDERS = "\\}\\]\\),.s?!/\\s";
+	// Extract an acronym from its context: (ANA) or ANA, or ANA. ...
+	var STARTERS = "\\[\\{\\(,/\\-";
+	var ENDERS = "\\}\\]\\),.s?\\-!/\\s";
 	var enders_regex = new RegExp("["+ENDERS+"]");
 	var ENDERS_MAX_SIZE = 4;
 	function splitMatch(match) {
@@ -69,32 +47,35 @@ function lraf_main() {
 		};
 	}
 
+	// Placeholder to use in text nodes to replace acronyms. Should be find later and replace by html
 	function acronymPlaceholder(match) {
 		var split = splitMatch(match);
 		return split["start"] + "[{LiveRampAcronymFinder:" + split["acronym"] + "}]" + split["end"];
 	}
 
+	// Replace the text placeholder by the html for the tooltip and the explanation
 	function replaceAcronym(acronymsData, acronym) {
 		if (acronym in acronymsData) {
 			return (`<span class="lraf-tooltip">`+acronym+`
 			  <span class="lraf-tooltiptext">
-			  	<span class="lraf_meaning">` + acronymsData[acronym]["meaning"] + `<span class="modify-icon" data-href="https://liveramp-eng-hackweek.appspot.com/acronym?acronym=` + acronym + `"><img src="`+chrome.extension.getURL("pencil.png")+`" style="width: 13px;"/></span></span>` + 
+			  	<span class="lraf_meaning">` + acronymsData[acronym]["meaning"] + `<span class="modify-icon" data-href="https://liveramp-eng-hackweek.appspot.com/acronym?acronym=` + acronym + `"><img src="`+chrome.extension.getURL("img/pencil.png")+`" style="width: 13px;"/></span></span>` + 
 			  	(acronymsData[acronym]["synonyms"].length > 0 ? `<span class="lraf_synonyms">Synonyms: ` + acronymsData[acronym]["synonyms"].join(', ') + `</span><br/>`: ``) +
 			  	(acronymsData[acronym]["description"].length > 0 ? `<span class="lraf_description">Description: ` + acronymsData[acronym]["description"] + `</span>` : ``) +
 			   `<span class="end"></span>
 			  </span>
 			</span>`);
 		} else {
-			console.log(acronym, "Missed");
+			console.log(acronym, "Missed");  // to easily know the acronyms to add
 			return (`<span class="lraf-tooltip">`+acronym+`
 			  <span class="lraf-tooltiptext">
-			  	Help the LiveRamp family: <span class="modify-icon" data-href="https://liveramp-eng-hackweek.appspot.com/acronym" target="_blank"><img src="`+chrome.extension.getURL("pencil.png")+`" style="width: 13px;"/></span>
+			  	Help the LiveRamp family: <span class="modify-icon" data-href="https://liveramp-eng-hackweek.appspot.com/acronym" target="_blank"><img src="`+chrome.extension.getURL("img/pencil.png")+`" style="width: 13px;"/></span>
 			    <span class="end"></span>
 			  </span>
 			</span>`);
 		}
 	}
 
+	// Check if a given word is an acronym (not too short or too long, with only capital letters (except start/end characters) and at least 2 of them
 	var MIN_SIZE = 2;
 	var MAX_SIZE = 4 + ENDERS_MAX_SIZE;
 	var acronym_regex = new RegExp("^["+STARTERS+"A-Z][A-Z]*["+ENDERS+"A-Z]{0,"+ENDERS_MAX_SIZE+"}$");
@@ -103,26 +84,31 @@ function lraf_main() {
 		return word.length <= MAX_SIZE && MIN_SIZE <= word.length && acronym_regex.test(word) && /[A-Z]{2,}/.test(word) && !(STOP_WORDS.includes(splitMatch(word)["acronym"]));
 	}
 
-	var places_to_replace = [];
-	// specific places for the website
-	if (window.location.href.includes("atlassian.net/wiki")) {
-		console.log("KB set up detected");
-		places_to_replace.push($("#main-content"));
-		// doesn't work because comments are loaded later
-		for (var i  = 0; i < $(".comment-content").length; i++) {
-			places_to_replace.push($($(".comment-content")[i]));
+	// Only active on certain pages and certain areas
+	function get_places_to_replace() {
+		var places_to_replace = [];
+		// specific places for the website
+		if (window.location.href.includes("atlassian.net/wiki")) {
+			console.log("KB set up detected");
+			places_to_replace.push($("#main-content"));
+			// doesn't work because comments are loaded later
+			for (var i  = 0; i < $(".comment-content").length; i++) {
+				places_to_replace.push($($(".comment-content")[i]));
+			}
+		} else if (window.location.href.includes("atlassian.net/browse")) {
+			console.log("JIRA set up detected");
+			places_to_replace.push($("#descriptionmodule"));
+		} else if (window.location.href.includes("mail.google.com/mail")) {
+			console.log("Gmail set up detected");
+			for (var i  = 0; i < $(".a3s").length; i++) {
+				places_to_replace.push($($(".a3s")[i]));
+			}
 		}
-	} else if (window.location.href.includes("atlassian.net/browse")) {
-		console.log("JIRA set up detected");
-		places_to_replace.push($("#descriptionmodule"));
-	} else if (window.location.href.includes("mail.google.com/mail")) {
-		console.log("Gmail set up detected");
-		for (var i  = 0; i < $(".a3s").length; i++) {
-			places_to_replace.push($($(".a3s")[i]));
-		}
+		return places_to_replace;
 	}
 
-
+	// find the acronyms in the _places_to_replace (going through their children)
+	// modify = true/false says if we should modify the acronyms we found (if not, only collects them)
 	function find_acronyms(modify, _places_to_replace) {
 		var queue = _places_to_replace.slice(0);  // copy it
 		var acronyms_found = new Set();
@@ -137,19 +123,24 @@ function lraf_main() {
 			});
 			for (var j = 0; j < levelTextNodes.length; j++) {
 				var levelTextNode = levelTextNodes[j];
-				var words = levelTextNode.nodeValue.split(" ");
+				var wordsSpaced = levelTextNode.nodeValue.split(" ");  // split on space
 				var changed = false;
-				for (var i = 0; i < words.length; i++) {
-					if (checkAcronym(words[i])) {
-						changed = true;
-						acronyms_found.add(splitMatch(words[i])["acronym"]);
-						if (modify) {
-							words[i] = acronymPlaceholder(words[i]);
+				for (var i = 0; i < wordsSpaced.length; i++) {
+					// We also split on hyphens to match acronyms like CID-PEL
+					var words = wordsSpaced[i].split("-");
+					for (var k = 0; k < words.length; k++) {
+						if (checkAcronym(words[k])) {
+							changed = true;
+							acronyms_found.add(splitMatch(words[k])["acronym"]);
+							if (modify) {
+								words[k] = acronymPlaceholder(words[k]);
+							}
 						}
 					}
+					wordsSpaced[i] = words.join("-");
 				}
 				if (modify && changed) {
-					levelTextNode.nodeValue = words.join(" ");
+					levelTextNode.nodeValue = wordsSpaced.join(" ");
 				}
 			}
 			elem.children().each(function() {
@@ -159,7 +150,7 @@ function lraf_main() {
 		return acronyms_found;
 	}
 
-	/* Pages using sub divs with scroll (like gmail mail content) won't scroll anymore because they would simply overflow */
+	// Pages using sub divs with scroll (like gmail mail content) won't scroll anymore because they would simply overflow
 	function allow_overflow_no_scroll() {
 		var tooltiptexts = $(".lraf-tooltiptext");
 		for (var i = 0; i < tooltiptexts.length; i++) {
@@ -174,6 +165,7 @@ function lraf_main() {
 		}
 	}
 
+	// To allow overflow, we use a fixed position => we have to find the correct position and height for the tooltiptext
 	function allow_overflow() {
 		$(".lraf-tooltip").hover( function() {
 			if ($(this).children(".lraf-tooltiptext").length == 1) {
@@ -209,10 +201,27 @@ function lraf_main() {
 		});
 	}
 
+	/***********************************************************************************************************************************************
+	********															MAIN LOGIC															********
+	***********************************************************************************************************************************************/    
+	// 0. Should we do something ? If yes mark it not to redo once. And what to do ?
+	// 0.a Should we do something on this page ?
+	if (document.getElementsByClassName("lraf_acronyms_converted").length > 0) {
+		// we have already done this page (couldn't simply store the url because we can come back to a page)
+		console.log("LiveRamp Acronyms Finder already run once on this page");
+		return;
+	}
+	// 0.b What to do ?
+	var places_to_replace = get_places_to_replace();
+	// 0.c Set a tag not to redo it
+	if (places_to_replace.length > 0) {
+		places_to_replace[0].append("<span class='lraf_acronyms_converted' style='display: none;'></span>");  // to say we already converted this page
+	}
+
 	// 1. Collect all the acronyms in the page
 	var acronyms_found = find_acronyms(modify=false, places_to_replace);
 
-	// 2. Retrieve the data from the DB before updating the acronyms display
+	// 2. Retrieve the data from the DB before updating the acronyms display (to avoid a flash of the placeholder texts while we query the DB)
 	if (acronyms_found.size > 0) {
 		console.log("Connecting to DB...");
 		$.getJSON(SERVER+"get?acronym=" + Array.from(acronyms_found).join(","), function(acronymsData) {
@@ -231,18 +240,15 @@ function lraf_main() {
 			*/
 			console.log("DB answered.");
 			if (acronymsData["success"]) {
-				// 3. Replace the acronyms in the text by the text placeholder
+				// 3. Now that we have the data to auickly replace the placeholders afterwards, we replace the acronyms in the text by the text placeholder
 				find_acronyms(modify=true, places_to_replace);
 
-				// 4. Find the placeholders and replace them with the popup html
+				// 4. Find the placeholders and replace them with the tooltip html
 				var placeholder_regex = new RegExp("\\[{LiveRampAcronymFinder:([\\w]{" + MIN_SIZE + "," + MAX_SIZE + "})}\\]", "g");
 				for (var i in places_to_replace) {	
 					var place_to_replace = places_to_replace[i];		
 					var newHtml = place_to_replace.html().replace(placeholder_regex, (s, m1) => replaceAcronym(acronymsData["acronyms"], m1) );
-					// console.log(newHtml);
 					place_to_replace.html(newHtml);
-					// console.log($("body").html());
-					// console.log("HTML", $("body").html());			
 				}
 
 				// 5. We allow the tooltips to overflow
@@ -250,7 +256,7 @@ function lraf_main() {
 
 				// 6. We listen to the modify icon
 				$(".modify-icon").click(function() {
-      				// sends message so that background opens a new tab
+      				// sends message so that background opens the modification tab
       				chrome.runtime.sendMessage({"message": "open_new_tab", "url": $(this).data("href")});
 				});
 			} else {
@@ -259,5 +265,4 @@ function lraf_main() {
 
 		});		
 	}
-	
 }

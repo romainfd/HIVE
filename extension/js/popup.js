@@ -1,4 +1,5 @@
-/* Manage user settings: never or always */
+/********************.    Manage user settings: never or always     ********************/
+// Set the user setting based on slider value
 function setUsageSetting() {
 	var usageValue = "never";
 	if (document.getElementById("usageSlider").checked) {
@@ -13,7 +14,7 @@ function setUsageSetting() {
 // Slider updates settings
 document.getElementById('usageSlider').onclick = setUsageSetting;
 
-// Sets to slider based on the former settings
+// Sets slider position based on the former settings
 chrome.storage.sync.get('usage', function(result) {
 	console.log('Value currently is ' + result.usage);
 	if (result.usage === "always") {
@@ -22,39 +23,31 @@ chrome.storage.sync.get('usage', function(result) {
 });
 
 
-/* Manage once convertAcronyms use */
+/********************.    Manage once convertAcronyms use     ********************/
 function convertAcronyms() {
-	chrome.storage.sync.get('cpt', function(result) {
-		if (result.cpt > 0) {
-			console.log("LiveRamp Acronyms Finder already used once");
-			return;  // we do it only once to avoid matching inside the popups themselves
-		} else {
-			    // Send a message to the active tab
-				chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-					var activeTab = tabs[0];
-					chrome.tabs.sendMessage(activeTab.id, {"message": "clicked_browser_action"});
-				});
-				chrome.storage.sync.set({"cpt": 1}, function() {
-				console.log("Counter value set to 1");
-			});
-		}
+    // Send a message to the active tab to convert acronyms (will test there if already done (with .lraf_acronyms_converted tag))
+	chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+		var activeTab = tabs[0];
+		chrome.tabs.sendMessage(activeTab.id, {"message": "convertAcronyms"});
 	});
 }
 
 document.getElementById('do_once').onclick = convertAcronyms;
 
 
-/* Manages the creation of new content */
+/********************.    Manages the creation of new content     ********************/
+SERVER = "https://liveramp-eng-hackweek.appspot.com/";
+
 document.getElementById("add_one").onclick = function() {
 	var searched_acronym = document.getElementById("acronym").value;
 	var end = "";
+	// We collect the acronym entered but not found
 	if (searched_acronym.length > 0) {
 		end = "?acronym="+searched_acronym;
 	}
-	chrome.tabs.create({url: "https://liveramp-eng-hackweek.appspot.com/acronym" + end});
-	// We collect the acronym entered but not found
+	chrome.tabs.create({url: SERVER + "acronym" + end});
 };
 
 document.getElementById("add_csv").onclick = function() {
-	chrome.tabs.create({url: "https://liveramp-eng-hackweek.appspot.com/csv"});
+	chrome.tabs.create({url: SERVER + "csv"});
 };

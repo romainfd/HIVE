@@ -3,7 +3,7 @@ import java.util.Vector;
 
 import com.google.appengine.api.datastore.Entity;
 
-public class AcronymList {
+class AcronymList {
 
   private boolean success = true;
   private HashMap<String, Acronym> acronyms;
@@ -12,8 +12,8 @@ public class AcronymList {
   public AcronymList(Entity[] entity_list) {
     this.acronyms = new HashMap<>();
     Acronym acronym;
-    for (int i = 0; i < entity_list.length; i++) {
-      acronym = new Acronym(entity_list[i]);
+    for (Entity anEntity_list : entity_list) {
+      acronym = new Acronym(anEntity_list);
       acronyms.put(acronym.getName(), acronym);
     }
   }

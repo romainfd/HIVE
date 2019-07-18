@@ -77,3 +77,7 @@
 .lraf_synonyms {
   font-style: italic;
 }
+
+.modify-icon img {
+  margin-left: 3px;
+}

@@ -3,9 +3,10 @@
 <html>
 <head>
     <title>HIVE - Post an Acronym</title>
+    <link rel="icon" type="image/png" href="/logo.png" />
     <link rel="stylesheet" type="text/css" href="/style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="/autocompleteAcronym.js"></script>
+    <script src="/scripts/autocompleteAcronym.js"></script>
     <script>
         $(document).on('keypress',function(e) {
             if(e.which == 13) {

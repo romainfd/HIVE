@@ -9,7 +9,7 @@ import com.google.appengine.api.datastore.Query;
 
 public class Acronym {
   // Access to datastore
-  private static DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+  private static final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
   private final static String ENTITY_SYNONYM = "Synonym";
   private final static String A1 = "acronym1";
   private final static String A2 = "acronym2";

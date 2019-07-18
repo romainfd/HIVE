@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="vendor/w3.css">
+	<link rel="stylesheet" href="css/tooltip.css">
+	<link rel="stylesheet" href="css/popup.css">
+</head>
+<body>
+	<!-- Rounded switch -->
+	<div style="text-align: center; margin: 8px 0 0 0;">
+		<img src="img/logo.png" style="height: 30px; position: relative; right: 5px; bottom: 1px;"> 
+		<span class="title">H</span>over <span class="title">I</span>nteractive <span class="title">V</span>isualization and <span class="title">E</span>xplanation
+	</div>
+	<hr style="margin: 5px 0 1px 0;" />
+	<div id="header" style="padding: 7px 15px 0 15px;">	
+		<span class="title">Activate:</span><span style="margin: 0 5px;">never</span>
+		<label class="switch">
+		  <input type="checkbox" id="usageSlider">
+		  <span class="slider round"></span>
+		</label>
+		<span style="margin: 0 5px;">always</span>
+		<button id="do_once" class="w3-button w3-white w3-border w3-border-blue w3-round">Activate once</button>
+	</div>
+	<hr style="margin: 8px 0 2px 0;" />
+	<div id="middle" style="padding: 7px 15px 0 15px;">
+		<span class="title">Add:</span>
+		<button id="add_one" class="add_acro w3-button w3-white w3-border w3-border-blue w3-round" href="https://google.com">New acronym</button>
+		<button id="add_csv" class="add_acro w3-button w3-white w3-border w3-border-blue w3-round" href="https://gaagle.com">Upload CSV</button>
+	</div>
+
+	<hr style="margin: 8px 0 8px 0;" />
+	<!--Make sure the form has the autocomplete function switched off:-->
+	<form autocomplete="off" action="/action_page.php">
+	  <div class="autocomplete">
+	    <input id="acronym" type="text" name="acronym" placeholder="Search for an acronym...">
+	  </div>
+	</form>
+
+	<div id="acronymData" style="padding: 10px 15px 3px 15px;"></div>
+
+	<script src="vendor/jquery-3.3.1.min.js"></script>
+	<script src="js/popup.js"></script>
+	<script src="js/autocomplete.js"></script>
+</body>
+</html>

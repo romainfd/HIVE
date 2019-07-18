@@ -12,6 +12,8 @@ import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.opencsv.CSVReader;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 
 public class PostServlet extends HttpServlet {
 
@@ -25,93 +27,99 @@ public class PostServlet extends HttpServlet {
   private final static String SYN = "synonyms";
 
 
-  private static DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+  private static final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
   @Override
   public void doGet(HttpServletRequest req, HttpServletResponse resp)
       throws IOException, ServletException {
 
-    resp.addHeader("Access-Control-Allow-Origin", "*");
-    resp.addHeader("Access-Control-Allow-Methods","GET, OPTIONS, HEAD, PUT, POST");
+    if (LoginServlet.checkAccess(req, resp)) {
+      resp.addHeader("Access-Control-Allow-Origin", "*");
+      resp.addHeader("Access-Control-Allow-Methods", "GET, OPTIONS, HEAD, PUT, POST");
 
-    String action = req.getRequestURI().split("/")[1];
-    if(action.equals("acronym")) {
-      String acronym = req.getParameter("acronym");
-      String meaning = "";
-      String description = "";
-      String synonyms = "";
+      String action = req.getRequestURI().split("/")[1];
+      if (action.equals("acronym")) {
+        String acronym = req.getParameter("acronym");
+        String meaning = "";
+        String description = "";
+        String synonyms = "";
 
-      if (acronym == null)
-        acronym = "";
-      else {
-        Entity entity = GetServlet.get(acronym);
-        if (entity != null) {
-          meaning = (String)entity.getProperty(MEANING);
-          description = (String)entity.getProperty(DESC);
-          synonyms = String.join(", ", Acronym.getSynonyms(acronym));
+        if (acronym == null)
+          acronym = "";
+        else {
+          Entity entity = GetServlet.get(acronym);
+          if (entity != null) {
+            meaning = (String)entity.getProperty(MEANING);
+            description = (String)entity.getProperty(DESC);
+            synonyms = String.join(", ", Acronym.getSynonyms(acronym));
+          }
         }
-      }
 
-      req.setAttribute(ACRONYM, acronym);
-      req.setAttribute(MEANING, meaning);
-      req.setAttribute(DESC, description);
-      req.setAttribute(SYN, synonyms);
-      req.getRequestDispatcher("/jsp/acronym.jsp").forward(req, resp);
-    }
-    else if(action.equals("csv")){
-      req.getRequestDispatcher("/jsp/csv.jsp").forward(req, resp);
+        req.setAttribute(ACRONYM, acronym);
+        req.setAttribute(MEANING, meaning);
+        req.setAttribute(DESC, description);
+        req.setAttribute(SYN, synonyms);
+        req.getRequestDispatcher("/jsp/acronym.jsp").forward(req, resp);
+      } else if (action.equals("csv")) {
+        req.getRequestDispatcher("/jsp/csv.jsp").forward(req, resp);
+      }
     }
   }
 
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-    resp.addHeader("Access-Control-Allow-Origin", "*");
-    resp.addHeader("Access-Control-Allow-Methods","GET, OPTIONS, HEAD, PUT, POST");
+    if (LoginServlet.checkAccess(req, resp)) {
 
-    String action = req.getRequestURI().split("/")[1];
-    if(action.equals("acronym")){
-      String acronym = req.getParameter("acronym").toUpperCase();
-      String meaning = req.getParameter("meaning");
-      String description = req.getParameter("description");
-      String synonyms = req.getParameter("synonyms");
+      resp.addHeader("Access-Control-Allow-Origin", "*");
+      resp.addHeader("Access-Control-Allow-Methods", "GET, OPTIONS, HEAD, PUT, POST");
 
-      if(synonyms != null){
-        String[] synonym_list = synonyms.replace(" ", "").split(",");
-        for (String synonym : synonym_list) {
-          if(synonym.length() > 0)
-            postSynonym(acronym, synonym);
+      String action = req.getRequestURI().split("/")[1];
+      if (action.equals("acronym")) {
+        String acronym = req.getParameter("acronym").toUpperCase();
+        String meaning = req.getParameter("meaning");
+        String description = req.getParameter("description");
+        String synonyms = req.getParameter("synonyms");
+
+        if (synonyms != null) {
+          String[] synonym_list = synonyms.replace(" ", "").split(",");
+          for (String synonym : synonym_list) {
+            if (synonym.length() > 0)
+              postSynonym(acronym, synonym);
+          }
+        }
+
+        if (Acronym.checkAcronym(acronym)) {
+          postAcronym(acronym, meaning, description);
+          req.getRequestDispatcher("/jsp/success.jsp").forward(req, resp);
+        } else {
+          req.getRequestDispatcher("/jsp/error.jsp").forward(req, resp);
+        }
+      } else if (action.equals("csv")) {
+        try {
+          int posted = postCSV(req.getParameter("glossary"));
+          req.setAttribute("posted", posted);
+          req.getRequestDispatcher("/jsp/successCSV.jsp").forward(req, resp);
+        } catch (Exception e) {
+          req.getRequestDispatcher("/jsp/errorCSV.jsp").forward(req, resp);
         }
       }
 
-      if(Acronym.checkAcronym(acronym)){
-        postAcronym(acronym, meaning, description);
-        req.getRequestDispatcher("/jsp/success.jsp").forward(req, resp);
-      }
-      else{
-        req.getRequestDispatcher("/jsp/error.jsp").forward(req, resp);
-      }
-    }
-    else if(action.equals("csv")){
-      try {
-        int posted = postCSV(req.getParameter("glossary"));
-        req.setAttribute("posted", posted);
-        req.getRequestDispatcher("/jsp/successCSV.jsp").forward(req, resp);
-      } catch(Exception e) {
-        req.getRequestDispatcher("/jsp/errorCSV.jsp").forward(req, resp);
-      }
     }
   }
 
-  public static void postAcronym(String acronym, String meaning, String description) {
+  private static void postAcronym(String acronym, String meaning, String description) {
+    String cleanMeaning = Jsoup.clean(meaning, Whitelist.basic());
+    String cleanDescription = Jsoup.clean(description, Whitelist.basic());
+
     Entity entity = new Entity(ENTITY_ACRONYM, acronym);
     entity.setProperty(ACRONYM, acronym);
-    entity.setProperty(MEANING, meaning);
-    entity.setProperty(DESC, description);
+    entity.setProperty(MEANING, cleanMeaning);
+    entity.setProperty(DESC, cleanDescription);
     datastore.put(entity);
   }
 
-  public static int postCSV(String glossary){
+  private static int postCSV(String glossary){
     int posted = 0;
     try (CSVReader csvReader = new CSVReader(new StringReader(glossary))) {
       String[] values;
@@ -120,24 +128,23 @@ public class PostServlet extends HttpServlet {
         String acronym = line.get(0).toUpperCase();
         String meaning = line.get(1);
         String description = line.get(2);
-        String[] synonyms = line.get(3).replace(" ", "").split(",");;
+        String[] synonyms = line.get(3).replace(" ", "").split(",");
         if(Acronym.checkAcronym(acronym)){
           postAcronym(acronym, meaning, description);
           posted++;
           for (String synonym : synonyms) {
-            postSynonym(acronym, synonym);
+            if(synonym.length() > 0)
+              postSynonym(acronym, synonym);
           }
         }
       }
-    } catch (FileNotFoundException e) {
-      e.printStackTrace();
     } catch (IOException e) {
       e.printStackTrace();
     }
     return posted;
   }
 
-  public static void postSynonym(String acronym1, String acronym2) {
+  private static void postSynonym(String acronym1, String acronym2) {
     if(acronym2.compareTo(acronym1) < 0)
       postSynonym(acronym2, acronym1);
     else {

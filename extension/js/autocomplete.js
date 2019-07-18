@@ -29,21 +29,27 @@ function autocomplete(inp, arr) {
           /*insert a input field that will hold the current array item's value:*/
           b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
           /*execute a function when someone clicks on the item value (DIV element):*/
-              b.addEventListener("click", function(e) {
-              /*insert the value for the autocomplete text field:*/
-              var acronym = this.getElementsByTagName("input")[0].value;
-              inp.value = acronym;
-              /*close the list of autocompleted values,
-              (or any other open lists of autocompleted values:*/
-              closeAllLists();
-              // We also collect the acronym data and display it below
-				$.getJSON(SERVER+"get?acronym=" + acronym, function(acronymData) {
-					if (acronymData["success"]) {
-		              document.getElementById("acronymData").innerHTML = `<span class="lraf_meaning">` + acronymData["acronyms"][acronym]["meaning"] + `</span>` + 
-						  	(acronymData["acronyms"][acronym]["synonyms"].length > 0 ? `<span class="lraf_synonyms">Synonyms: ` + acronymData["acronyms"][acronym]["synonyms"].join(', ') + `</span><br/>`: ``) +
-						  	(acronymData["acronyms"][acronym]["description"].length > 0 ? `<span class="lraf_description">Description: ` + acronymData["acronyms"][acronym]["description"] + `</span>` : ``) +
-						  `</span>
-						</span>`;
+          b.addEventListener("click", function(e) {
+          /*insert the value for the autocomplete text field:*/
+          var acronym = this.getElementsByTagName("input")[0].value;
+          inp.value = acronym;
+          /*close the list of autocompleted values,
+          (or any other open lists of autocompleted values:*/
+          closeAllLists();
+          // We also collect the acronym data and display it below
+  				$.getJSON(SERVER+"get?acronym=" + acronym, function(acronymData) {
+  					if (acronymData["success"]) {
+  		        document.getElementById("acronymData").innerHTML = `<span class="lraf_meaning">` + acronymData["acronyms"][acronym]["meaning"] + `<span class="modify-icon" data-href="https://liveramp-eng-hackweek.appspot.com/acronym?acronym=` + acronym + `" target="_blank"><img src="img/pencil.png" style="width: 16px;"/></span></span>` + 
+  						  	(acronymData["acronyms"][acronym]["synonyms"].length > 0 ? `<span class="lraf_synonyms">Synonyms: ` + acronymData["acronyms"][acronym]["synonyms"].join(', ') + `</span><br/>`: ``) +
+  						  	(acronymData["acronyms"][acronym]["description"].length > 0 ? `<span class="lraf_description">Description: ` + acronymData["acronyms"][acronym]["description"] + `</span>` : ``) +
+  						  `</span>
+  						</span>`;
+
+            // We listen to the modify icon
+            $(".modify-icon").click(function() {
+                  // sends message so that background opens a new tab
+                  chrome.runtime.sendMessage({"message": "open_new_tab", "url": $(this).data("href")});
+            });
 					} else {
 						alert("Error with LiveRamp acronym finder: couldn't connect to the database.");
 					}

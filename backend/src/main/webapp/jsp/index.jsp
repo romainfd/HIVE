@@ -1,8 +1,11 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!doctype html>
 <html>
 <head>
     <title>HIVE</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="icon" type="image/png" href="/logo.png" />
+    <link rel="stylesheet" type="text/css" href="/style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
         $(document).ready(function() {
@@ -25,7 +28,7 @@
             }
         });
     </script>
-    <script src="autocomplete.js"></script>
+    <script src="/scripts/autocomplete.js"></script>
     <style>
         .autocomplete-items{
             background: white;
@@ -38,33 +41,9 @@
             text-align: left;
         }
     </style>
-    <!--GOOGLE SIGN IN-->
-    <meta name="google-signin-scope" content="profile email">
-    <meta name="google-signin-client_id" content="YOUR_CLIENT_ID.apps.googleusercontent.com">
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
 </head>
 <body bgcolor="#f5f6fa">
 <center>
-
-    <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
-    <script>
-        function onSignIn(googleUser) {
-            // Useful data for your client-side scripts:
-            var profile = googleUser.getBasicProfile();
-            console.log("ID: " + profile.getId()); // Don't send this directly to your server!
-            console.log('Full Name: ' + profile.getName());
-            console.log('Given Name: ' + profile.getGivenName());
-            console.log('Family Name: ' + profile.getFamilyName());
-            console.log("Image URL: " + profile.getImageUrl());
-            console.log("Email: " + profile.getEmail());
-
-            // The ID token you need to pass to your backend:
-            var id_token = googleUser.getAuthResponse().id_token;
-            console.log("ID Token: " + id_token);
-        }
-    </script>
-
-
     <a href="https://liveramp-eng-hackweek.appspot.com">
         <img src="logo.png" , align="bottom">
     </a>

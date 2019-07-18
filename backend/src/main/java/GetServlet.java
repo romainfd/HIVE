@@ -27,8 +27,8 @@ public class GetServlet extends HttpServlet {
   private final static String DESC = "description";
   private final static String SYN = "synonyms";
 
-  private static DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-  private Gson gson = new Gson();
+  private static final DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+  private final Gson gson = new Gson();
 
   public static Entity get(String acronym) {
     Key k = KeyFactory.createKey(ENTITY_ACRONYM, acronym);
@@ -39,10 +39,10 @@ public class GetServlet extends HttpServlet {
     }
   }
 
-  public static Entity[] get(String[] acronym_list) {
+  private static Entity[] get(String[] acronym_list) {
     Vector<Key> ks = new Vector<>();
-    for (int i = 0; i < acronym_list.length; i++) {
-      ks.add(KeyFactory.createKey(ENTITY_ACRONYM, acronym_list[i]));
+    for (String anAcronym_list : acronym_list) {
+      ks.add(KeyFactory.createKey(ENTITY_ACRONYM, anAcronym_list));
     }
     Collection<Entity> result = datastore.get(ks).values();
     return result.toArray(new Entity[result.size()]);
@@ -55,9 +55,12 @@ public class GetServlet extends HttpServlet {
     resp.addHeader("Access-Control-Allow-Origin", "*");
     resp.addHeader("Access-Control-Allow-Methods", "GET, OPTIONS, HEAD, PUT, POST");
 
-    AcronymList acronyms = null;
+    AcronymList acronyms;
     String action = req.getRequestURI().split("/")[1];
-    if(action.equals("get")) {
+    if(action.equals("wrongAccount")) {
+      req.getRequestDispatcher("/jsp/wrongAccount.jsp").forward(req, resp);
+    }
+    else if(action.equals("get")) {
       String acronym = req.getParameter("acronym");
       String[] acronym_list = acronym.split(",");
       Entity[] entity_list = get(acronym_list);
@@ -87,22 +90,24 @@ public class GetServlet extends HttpServlet {
       out.flush();
     }
     else if(action.equals("browse")) {
-      String acronym = req.getParameter("acronym");
-      if (acronym == null) {
-        req.getRequestDispatcher("/index.html").forward(req, resp);
-      } else {
-        Entity entity = GetServlet.get(acronym);
-        if (entity == null) {
-          req.getRequestDispatcher("/jsp/notFound.jsp").forward(req, resp);
+      if (LoginServlet.checkAccess(req, resp)) {
+        String acronym = req.getParameter("acronym");
+        if (acronym == null) {
+          req.getRequestDispatcher("/index.html").forward(req, resp);
         } else {
-          String meaning = (String)entity.getProperty(MEANING);
-          String description = (String)entity.getProperty(DESC);
-          String synonyms = String.join(", ", Acronym.getSynonyms(acronym));
-          req.setAttribute(ACRONYM, acronym);
-          req.setAttribute(MEANING, meaning);
-          req.setAttribute(DESC, description);
-          req.setAttribute(SYN, synonyms);
-          req.getRequestDispatcher("/jsp/browse.jsp").forward(req, resp);
+          Entity entity = GetServlet.get(acronym);
+          if (entity == null) {
+            req.getRequestDispatcher("/jsp/notFound.jsp").forward(req, resp);
+          } else {
+            String meaning = (String)entity.getProperty(MEANING);
+            String description = (String)entity.getProperty(DESC);
+            String synonyms = String.join(", ", Acronym.getSynonyms(acronym));
+            req.setAttribute(ACRONYM, acronym);
+            req.setAttribute(MEANING, meaning);
+            req.setAttribute(DESC, description);
+            req.setAttribute(SYN, synonyms);
+            req.getRequestDispatcher("/jsp/browse.jsp").forward(req, resp);
+          }
         }
       }
     }
